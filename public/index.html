@@ -9,14 +9,16 @@
     <canvas id="myCanvas" width="1200" height="500"></canvas>
     <script>
 
-      window.requestAnimFrame = (function(callback) {
-        return window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || window.oRequestAnimationFrame || window.msRequestAnimationFrame ||
-        function(callback) {
-          window.setTimeout(callback, 1000 / 60);
-        };
-      })();
+     
 
-      function drawAll () {
+      function drawAllToCanvas () {
+        window.requestAnimFrame = (function(callback) {
+          return window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || window.oRequestAnimationFrame || window.msRequestAnimationFrame ||
+            function(callback) {
+              window.setTimeout(callback, 1000 / 60);
+            };
+        })();
+
         var c = document.getElementById("myCanvas");
         var ctx = c.getContext("2d");
         var start = {
@@ -37,35 +39,34 @@
           ctx.moveTo((start.x + r), start.y);
           ctx.lineTo(c.width, start.y);
           ctx.stroke();
-          
+
         }
 
         function drawCircle () {
-          var endPercent = 110;
-          var curPerc = 0;
+          var end = 190;
+          var cur = 0;
           var counterClockwise = false;
           var circ = Math.PI * 2;
-          var quart = Math.PI / 2;
+          var quart = Math.PI / 220;
 
           function animate(current) {
             ctx.beginPath();
             ctx.arc(start.x, start.y, r, -(quart), ((circ) * current) - quart, false);
             ctx.stroke();
-              curPerc++;
-              if (curPerc < endPercent) {
+              cur++;
+              if (cur < end) {
                 requestAnimFrame(function () {
-                animate(curPerc / 100)
+                animate(cur / 180)
                 });
+              } else {
+                drawLine();
               }
           }
           animate();
         }
-
         drawCircle();
-        drawLine();
-
       };
-      drawAll();
+      drawAllToCanvas();
 
 
     </script>    
