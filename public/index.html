@@ -8,9 +8,6 @@
   <body>
     <canvas id="myCanvas" width="1200" height="500"></canvas>
     <script>
-
-     
-
       function drawAllToCanvas () {
         window.requestAnimFrame = (function(callback) {
           return window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || window.oRequestAnimationFrame || window.msRequestAnimationFrame ||
@@ -21,25 +18,64 @@
 
         var c = document.getElementById("myCanvas");
         var ctx = c.getContext("2d");
+        var r = 200;
+
         var start = {
           x: 100,
           y: 300
         };
-        var r = 200;
 
+        var myLine = {
+          x: c.width / 4,
+          y: c.height / 2,
+          width: 10,
+          height: 2,
+          borderWidth: 2
+        }
+        
 
         ctx.lineWidth = 4;
         ctx.strokeStyle = 'black';
+        ctx.shadowOffsetX = 0;
+        ctx.shadowOffsetY = 0;
+        ctx.shadowBlur = 10;
+        ctx.shadowColor = 'yellow';
 
+        function drawLineAcross () {
 
+          function drawLine (myLine, ctx) {
+           
+            ctx.beginPath();
+            ctx.moveTo((start.x + r), start.y);
+            ctx.rect(myLine.x, myLine.y, myLine.width, myLine.height);
+            ctx.lineWidth = myLine.borderWidth;
+            ctx.stroke();
 
-        function drawLine () {
-          
-          ctx.beginPath();
-          ctx.moveTo((start.x + r), start.y);
-          ctx.lineTo(c.width, start.y);
-          ctx.stroke();
+          }
 
+          function animate(myline, c, ctx, startTime) {
+
+            var time = (new Date()).getTime() - startTime;
+            var linearSpeed = 300;
+            var newX = linearSpeed * time / 1000;
+              if(newX < c.width - myLine.width - myLine.borderWidth / 2) {
+                myLine.x = newX;
+              }
+
+            drawLine(myLine, ctx);
+
+            requestAnimFrame(function() {
+              animate(myLine, c, ctx, startTime);
+            });
+            }
+
+            drawLine(myLine, ctx);
+
+            // wait one second before starting animation
+            setTimeout(function() {
+            var startTime = (new Date()).getTime();
+            animate(myLine, c, ctx, startTime);
+            }, 1000);
         }
 
         function drawCircle () {
@@ -59,7 +95,7 @@
                 animate(cur / 180)
                 });
               } else {
-                drawLine();
+                drawLineAcross();
               }
           }
           animate();
@@ -67,8 +103,6 @@
         drawCircle();
       };
       drawAllToCanvas();
-
-
     </script>    
   </body>
 </html>  
