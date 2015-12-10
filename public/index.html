@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+  
+<head>
+  <head>
+  <title>Arc Experiment</title>
+  </head>
+  <body>
+    <canvas id="myCanvas" width="1200" height="500"></canvas>
+    <script>
+
+      window.requestAnimFrame = (function(callback) {
+        return window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || window.oRequestAnimationFrame || window.msRequestAnimationFrame ||
+        function(callback) {
+          window.setTimeout(callback, 1000 / 60);
+        };
+      })();
+
+      function drawAll () {
+        var c = document.getElementById("myCanvas");
+        var ctx = c.getContext("2d");
+        var start = {
+          x: 100,
+          y: 300
+        };
+        var r = 200;
+
+
+        ctx.lineWidth = 4;
+        ctx.strokeStyle = 'black';
+
+
+
+        function drawLine () {
+          
+          ctx.beginPath();
+          ctx.moveTo((start.x + r), start.y);
+          ctx.lineTo(c.width, start.y);
+          ctx.stroke();
+          
+        }
+
+        function drawCircle () {
+          var endPercent = 110;
+          var curPerc = 0;
+          var counterClockwise = false;
+          var circ = Math.PI * 2;
+          var quart = Math.PI / 2;
+
+          function animate(current) {
+            ctx.beginPath();
+            ctx.arc(start.x, start.y, r, -(quart), ((circ) * current) - quart, false);
+            ctx.stroke();
+              curPerc++;
+              if (curPerc < endPercent) {
+                requestAnimFrame(function () {
+                animate(curPerc / 100)
+                });
+              }
+          }
+          animate();
+        }
+
+        drawCircle();
+        drawLine();
+
+      };
+      drawAll();
+
+
+    </script>    
+  </body>
+</html>  
+
+
+
+ 
